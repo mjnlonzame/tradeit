@@ -1,0 +1,12 @@
+spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+  application:
+    name: MJ's Trading App    
+      
+      
+
+tradeit:
+  welcome: You are using ${spring.application.name}.

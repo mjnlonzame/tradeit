@@ -1,0 +1,5 @@
+{"properties": [{
+  "name": "tradeit.welcome",
+  "type": "java.lang.String",
+  "description": "Sets the welcome message of the application'"
+}]}
