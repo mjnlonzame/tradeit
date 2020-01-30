@@ -10,3 +10,26 @@ spring:
 
 tradeit:
   welcome: You are using ${spring.application.name}.
+  
+  
+#  graphql.servlet.mapping=/graphql
+#graphql.servlet.enabled=true
+#graphql.servlet.corsEnabled=true
+#
+#graphiql.enabled=true
+#graphiql.endpoint=/graphql
+#graphiql.mapping=graphiql
+
+
+graphql:
+  servlet: 
+    enabled: true
+    mapping: /graphql
+    corsEnabled: true
+    
+graphiql:
+  enabled: true
+  endpoint: /graphql
+  mapping: graphiql
+    
+

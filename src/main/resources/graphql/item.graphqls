@@ -1,0 +1,10 @@
+type Item {
+  id: ID!
+  name: String!
+  price: Float!
+}
+
+type Query {
+  findAllItems: [Item]!
+  countItems: Long!
+}
