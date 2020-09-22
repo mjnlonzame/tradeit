@@ -8,3 +8,8 @@ type Query {
   findAllItems: [Item]!
   countItems: Long!
 }
+
+
+type Mutation {
+  newItem(name: String!, price:Float!) : Item!
+}

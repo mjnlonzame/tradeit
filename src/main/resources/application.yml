@@ -4,7 +4,10 @@ spring:
     hibernate:
       ddl-auto: create-drop
   application:
-    name: MJ's Trading App    
+    name: MJ's Trading App
+
+server:
+  port: 8080
       
       
 
