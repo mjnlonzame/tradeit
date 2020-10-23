@@ -1,6 +1,6 @@
 package tradeit.model;
 
-public enum CarValue {
+public enum ItemValue {
 	LOW,
 	MEDIUM,
 	HIGH,

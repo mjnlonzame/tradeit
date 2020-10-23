@@ -4,13 +4,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import tradeit.model.CarValue;
 import tradeit.model.Item;
+import tradeit.model.ItemValue;
 
-public interface ItemService {
+public interface ItemService{
 	public List<Item> getAll();
 	public Optional<Item> getById(Long id);
 	public Optional<Item> getByName(String name);
 	public Item save(Item item);
-	public Optional<Map<CarValue, List<Item>>> getCarByValue();
+	public Optional<Map<ItemValue, List<Item>>> getItemByValue();
 }

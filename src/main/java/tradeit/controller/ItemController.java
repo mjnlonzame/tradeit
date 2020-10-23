@@ -16,9 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import tradeit.model.CarValue;
+import tradeit.model.ItemValue;
 import tradeit.model.Item;
-import tradeit.repository.ItemRepository;
 import tradeit.service.ItemService;
 
 @RestController
@@ -59,9 +58,9 @@ public class ItemController {
         return new ResponseEntity<>(itemService.save(item), HttpStatus.CREATED);
     }
 
-    @GetMapping("car-by-value")
-    public ResponseEntity<Map<CarValue, List<Item>>> getGroupedItem() {
-        Optional<Map<CarValue, List<Item>>> optItemByCarVal = itemService.getCarByValue();
+    @GetMapping("item-by-value")
+    public ResponseEntity<Map<ItemValue, List<Item>>> getGroupedItem() {
+        Optional<Map<ItemValue, List<Item>>> optItemByCarVal = itemService.getItemByValue();
         if (optItemByCarVal.isPresent()) {
             return new ResponseEntity<>(optItemByCarVal.get(), HttpStatus.OK);
         }
