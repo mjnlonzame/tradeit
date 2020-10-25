@@ -13,4 +13,5 @@ public interface ItemService{
 	public Optional<Item> getByName(String name);
 	public Item save(Item item);
 	public Optional<Map<ItemValue, List<Item>>> getItemByValue();
+	public void deleteById(Long id);
 }

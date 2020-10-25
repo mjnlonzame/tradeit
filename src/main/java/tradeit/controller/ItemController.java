@@ -5,16 +5,11 @@ import java.util.*;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import tradeit.model.ItemValue;
 import tradeit.model.Item;
@@ -66,7 +61,7 @@ public class ItemController {
         }
         return new ResponseEntity<>(Collections.emptyMap(), HttpStatus.NOT_FOUND);
     }
-//	
+//
 //	
 //	@PatchMapping("/{id}")
 //	public ResponseEntity<Item> patchItem(@PathVariable("id") Long id, @RequestBody Item patchItem) {
@@ -88,14 +83,16 @@ public class ItemController {
 //		return new ResponseEntity<>(itemRepository.save(item), HttpStatus.OK);
 //	}
 //	
-//	@DeleteMapping("/{id}")
-//	@ResponseStatus(code = HttpStatus.NO_CONTENT)
-//	public void deleteItem(@PathVariable("id") Long id) {
-//		try {
-//			itemRepository.deleteById(id);
-//		} catch (EmptyResultDataAccessException e) {
-//		}
-//	}
+	@DeleteMapping("/{id}")
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
+	public ResponseEntity<?> deleteItem(@PathVariable("id") Long id) {
+		try {
+			itemService.deleteById(id);
+            return ResponseEntity.noContent().build();
+		} catch (EmptyResultDataAccessException e) {
+		    return ResponseEntity.notFound().build();
+		}
+	}
 
 
 }

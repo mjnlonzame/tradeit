@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import tradeit.model.Item;
@@ -14,6 +15,7 @@ import tradeit.model.ItemValue;
 import tradeit.repository.ItemRepository;
 
 @Service
+
 public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
 
@@ -45,19 +47,21 @@ public class ItemServiceImpl implements ItemService {
         return itemRepository.save(item);
     }
 
-//    @Override
-//    public Optional<Map> getItemByValue() {
-//        return Optional.empty();
-//    }
-
     @Override
     public Optional<Map<ItemValue, List<Item>>> getItemByValue() {
-//        return null;
         return Optional.ofNullable(this.getAll().stream().collect(Collectors.groupingBy(i -> {
             ValueCategorizer valueCategorizer = i.getValueCategorizerFactory();
-
-            return  valueCategorizer.getValue(i.getPrice());
+            return valueCategorizer.getValue(i.getPrice());
         })));
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        Optional<Item> optItem = itemRepository.findById(id);
+        if(!optItem.isPresent()){
+            throw new EmptyResultDataAccessException("Item was not found.", 0);
+        }
+        itemRepository.deleteById(id);
     }
 
 }
