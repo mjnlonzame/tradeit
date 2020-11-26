@@ -26,7 +26,7 @@ import tradeit.service.ValueCategorizer;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Item {
+public class Item  extends AuditModel{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
