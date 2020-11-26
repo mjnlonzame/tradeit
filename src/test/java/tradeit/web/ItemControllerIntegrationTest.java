@@ -4,7 +4,10 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.assertj.core.api.Assertions;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
+import tradeit.model.Item;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -25,10 +29,14 @@ public class ItemControllerIntegrationTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
+
     @Test
     public void getAllItems() throws Exception {
-        ResponseEntity<List> response =
-                this.restTemplate.getForEntity("http://localhost:" + port + "/item/", List.class);
-        assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
+        String url = "http://localhost:" + port + "/item/";
+        Item item = new Item("Item 1", 5.00);
+        ResponseEntity<Item> entity = this.restTemplate.postForEntity(url, item, Item.class);
+        Item[] items =
+                this.restTemplate.getForObject(url, Item[].class);
+        Assertions.assertThat(items).extracting(Item::getName).containsOnly("Item 1");
     }
 }

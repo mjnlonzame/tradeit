@@ -1,6 +1,7 @@
 package tradeit.controller;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -9,8 +10,11 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import tradeit.model.FieldErrorMessage;
 import tradeit.model.ItemValue;
 import tradeit.model.Item;
 import tradeit.service.ItemService;
@@ -41,11 +45,16 @@ public class ItemController {
         return new ResponseEntity<>(items, HttpStatus.OK);
     }
 
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    @ExceptionHandler(MethodArgumentNotValidException.class)
+//    List<FieldErrorMessage> exceptionHandler(MethodArgumentNotValidException e) {
+//        List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
+//        List<FieldErrorMessage> fieldErrorMessages = fieldErrors.stream().map(fieldError -> new FieldErrorMessage(fieldError.getField(), fieldError.getDefaultMessage())).collect(Collectors.toList());
+//        return fieldErrorMessages;
+//    }
+
     @PostMapping(value = "/", consumes = "application/json")
-    public ResponseEntity<Item> createItem(@RequestBody @Valid Item item, Errors errors) {
-        if (errors.hasErrors()) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<Item> createItem(@RequestBody @Valid Item item) {
         Optional<Item> optFoundItem = itemService.getByName(item.getName());
         if (optFoundItem.isPresent()) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -61,7 +70,8 @@ public class ItemController {
         }
         return new ResponseEntity<>(Collections.emptyMap(), HttpStatus.NOT_FOUND);
     }
-//
+
+    //
 //	
 //	@PatchMapping("/{id}")
 //	public ResponseEntity<Item> patchItem(@PathVariable("id") Long id, @RequestBody Item patchItem) {
@@ -83,16 +93,16 @@ public class ItemController {
 //		return new ResponseEntity<>(itemRepository.save(item), HttpStatus.OK);
 //	}
 //	
-	@DeleteMapping("/{id}")
-	@ResponseStatus(code = HttpStatus.NO_CONTENT)
-	public ResponseEntity<?> deleteItem(@PathVariable("id") Long id) {
-		try {
-			itemService.deleteById(id);
+    @DeleteMapping("/{id}")
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
+    public ResponseEntity<?> deleteItem(@PathVariable("id") Long id) {
+        try {
+            itemService.deleteById(id);
             return ResponseEntity.noContent().build();
-		} catch (EmptyResultDataAccessException e) {
-		    return ResponseEntity.notFound().build();
-		}
-	}
+        } catch (EmptyResultDataAccessException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 
 }

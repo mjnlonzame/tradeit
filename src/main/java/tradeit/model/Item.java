@@ -1,5 +1,6 @@
 package tradeit.model;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -8,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.PastOrPresent;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
@@ -37,22 +40,21 @@ public class Item {
 
     private String yearModel;
 
+    @NotNull
     private double price;
 
     private double tradeValue;
 
-    private Date purchasedDate;
+
+    @PastOrPresent
+    private LocalDate purchasedDate;
 
     private Category category;
 
-//	public Item() {
-//		// TODO Auto-generated constructor stub
-//	}
-//
-//	public Item(String name, double price) {
-//		this.name = name;
-//		this.price = price;
-//	}
+	public Item(String name, double price) {
+		this.name = name;
+		this.price = price;
+	}
 
     @JsonIgnore
     public ValueCategorizer getValueCategorizerFactory() {
