@@ -2,6 +2,7 @@ package tradeit.model;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,7 +27,7 @@ import tradeit.service.ValueCategorizer;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Item  extends AuditModel{
+public class Item extends AuditModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -51,10 +52,10 @@ public class Item  extends AuditModel{
 
     private Category category;
 
-	public Item(String name, double price) {
-		this.name = name;
-		this.price = price;
-	}
+    public Item(String name, double price) {
+        this.name = name;
+        this.price = price;
+    }
 
     @JsonIgnore
     public ValueCategorizer getValueCategorizerFactory() {
@@ -67,17 +68,21 @@ public class Item  extends AuditModel{
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Item item = (Item) o;
+        return
+                Double.compare(item.price, price) == 0 &&
+                        Objects.equals(name, item.name) &&
+                        Objects.equals(model, item.model) &&
+                        Objects.equals(yearModel, item.yearModel);
+    }
 
-//	public  CarValue getCarValue() {
-//		if(this.getPrice() <= 500000)
-//			return CarValue.LOW;
-//		else if(this.getPrice() > 500000 && this.getPrice() <= 1000000)
-//			return CarValue.MEDIUM;
-//		else if(this.getPrice() > 1000000 && this.getPrice() <= 3000000)
-//			return CarValue.HIGH;
-//		else
-//			return CarValue.LUXURY;
-//	}
-
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), name, model, yearModel, price);
+    }
 }
